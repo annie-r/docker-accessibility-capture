@@ -123,6 +123,13 @@ RUN apt-get install -y libgl1-mesa-dev
 ENV QT_QPA_PLATFORM offscreen
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/opt/android-sdk-linux/emulator/lib64/:/opt/android-sdk-linux/emulator/lib64/qt/lib:/opt/android-sdk-linux/emulator/lib64/gles_swiftshader
 
+################################################################################
+# Include necessary files, eventually want to mount disk?
+################################################################################
+COPY data/Skype.apk /data/Skype.apk
+COPY docker-accessibility-capture/command.py /command.py
+RUN dos2unix /command.py && \
+    chmod +x /command.py
 
 
 ################################################################################
