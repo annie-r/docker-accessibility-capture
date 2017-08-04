@@ -11,10 +11,31 @@ socat tcp-listen:$ADB_PORT,bind=$ip,fork tcp:127.0.0.1:$ADB_PORT &
                   -no-audio \
                   -gpu swiftshader \
 				  -verbose \
-
-                  #-no-snapshot-save \
+				  -no-snapshot-save \
 				  #-qemu -usbdevice tablet -vnc :0
 
 adb wait-for-device
 adb devices
-adb logcat
+#adb logcat
+
+#to wait until it's up and running, including sdcard
+#will write better test later
+sleep 30
+
+#for output from docker
+#mkdir logsdocker 
+#emulog=$logs"/log.out"
+#touch $emulog
+#mkdir screenshots
+ls
+#install app
+echo "installing app"
+adb install ./data/app.apk 
+
+#to unlock phone
+adb shell input keyevent 82
+#screenshot
+adb shell screencap -p /sdcard/screen.png
+adb pull /sdcard/screen.png 
+
+

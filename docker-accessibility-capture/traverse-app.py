@@ -1,4 +1,4 @@
-from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
+from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
 #import com.android.provider.Settings
 import time, sys, os.path, os
 import subprocess #for running monkey command to start app with package name alone
@@ -13,6 +13,7 @@ class Traversal:
 	traversalFile = ''
 	logFile = ''
 	apkPath = ''
+	screenCount = 0
 	def __init__(self,arg_package,arg_traversalFile,arg_apkPath):
 		self.device = MonkeyRunner.waitForConnection()
 		self.package = arg_package
@@ -31,12 +32,21 @@ class Traversal:
 		data = yaml.load(file_descriptor)
 		return data
 
-	def click(self,x,y):
-		self.device.wake()
-		self.device.touch(x,y,'DOWN_AND_UP')
+	def test_responsiveness(self):
+		self.screenshot();
+		crashBox = (23,227,200,100)
+		screen = self.device.takeSnapshot()
+		ref = "./data/crashScreen.png"
+		crashScreen = MonkeyRunner.loadImageFromFile(ref).getSubImage(crashBox)
+		crashScreen.writeToFile("crash.png","png")
+		if crashScreen.sameAs(screen.getSubImage(crashBox),0.9):
+			print "crashed"
+			self.click([60,300])
+		self.screenshot()
 
 	def screenshot(self):
-		filename = "/screen.png"
+		filename = "/screen"+str(self.screenCount)+".png"
+		self.screenCount += 1
 		self.device.wake()
 		screenShot = self.device.takeSnapshot()
 		screenShot.writeToFile(filename,'png')
@@ -58,18 +68,22 @@ class Traversal:
 
 	def click(self, coords):
 		self.device.wake()
-		self.device.touch(int(coord[0]),int(coord[1]),'DOWN_AND_UP')
+		self.device.touch(int(coords[0]),int(coords[1]),'DOWN_AND_UP')
 
 	def text_entry(self, text):
 		self.device.type(text)
 
 	def traverse(self):
-		#self.install_app()
+		self.test_responsiveness()
+		'''
+		self.install_app()
+		self.open_app()
 		print(self.package+" trav: "+self.traversalFile+" apk: "+self.apkPath)
 		
 		traversal_file_data = self.yaml_loader(self.traversalFile)
 		traversal_info = traversal_file_data['traversal']
 		for traversal_info_key, traversal_info_value in traversal_info.iteritems():
+			self.test_responsiveness()
 			if traversal_info_key == "commands":
 				for traversal_step in traversal_info_value:
 					step = traversal_step['type']
@@ -81,6 +95,7 @@ class Traversal:
 					elif step == "text_entry":
 						text = traversal_step['text']
 						self.text_entry(text)
+						'''
 		
 
 if __name__ == "__main__":
