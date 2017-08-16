@@ -1,10 +1,17 @@
-from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
+#from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
+#from java.net import SocketException
+#from java.lang import NullPointerException
+#from com.android.ddmlib import TimeoutException
+
+
+
 #import com.android.provider.Settings
 import time, sys, os.path, os
 import subprocess #for running monkey command to start app with package name alone
 print sys.path
 sys.path.append(os.path.join('/usr/lib/python2.7/dist-packages/'))
 import yaml
+
 
 
 class Traversal:
@@ -14,9 +21,11 @@ class Traversal:
 	logFile = ''
 	apkPath = ''
 	screenCount = 0
+	failed = False
+
 	def __init__(self,arg_package,arg_traversalFile,arg_apkPath):
-		self.device = MonkeyRunner.waitForConnection()
-		self.test_responsiveness()
+		#self.device = MonkeyRunner.waitForConnection()
+		#self.test_responsiveness()
 		self.package = arg_package
 		self.traversalFile = arg_traversalFile
 		self.apkPath = arg_apkPath
@@ -34,6 +43,8 @@ class Traversal:
 		return data
 
 	def test_responsiveness(self):
+		print "testing responsiveness"
+		'''
 		self.screenshot();
 		crashBox = (23,227,200,100)
 		screen = self.device.takeSnapshot()
@@ -44,16 +55,19 @@ class Traversal:
 			print "crashed"
 			self.click([60,300])
 		self.screenshot()
+		'''
 
 	def screenshot(self):
-		filename = "/screen"+str(self.screenCount)+".png"
+		filename = "screen"+str(self.screenCount)+".png"
 		self.screenCount += 1
-		self.device.wake()
-		screenShot = self.device.takeSnapshot()
-		screenShot.writeToFile(filename,'png')
-		print "writing to : " + filename
+		#self.device.wake()
+		#screenShot = self.device.takeSnapshot()
+		#screenShot.writeToFile(filename,'png')
+		bashCommand = "adb shell screencap -p /sdcard/"+filename
+		self.bashCall(bashCommand)
+		print "writing to : /sdcard/" + filename
 		print "retrieve with:"
-		print "docker cp <id>:" + filename + " <path to copy to>"
+		print "docker cp <id>: /sdcard/" + filename + " <path to copy to>"
 
 	def install_app(self):
 		bashCommand = "adb install "+self.apkPath
@@ -67,17 +81,28 @@ class Traversal:
 		bashCommand = "adb shell monkey -p "+self.package+" -c android.intent.category.LAUNCHER 1"
 		self.bashCall(bashCommand)
 
+	def wait(self, duration):
+		time.sleep(duration)				## WAIT ################
+
 	def click(self, coords):
-		self.device.wake()
-		self.device.touch(int(coords[0]),int(coords[1]),'DOWN_AND_UP')
+		bashCommand = "adb shell input tap "+str(coords[0])+" "+ str(coords[1])
+		self.bashCall(bashCommand)
+		#self.device.wake()
+		#self.device.touch(int(coords[0]),int(coords[1]),'DOWN_AND_UP')
 
 	def text_entry(self, text):
-		self.device.type(text)
+		bashCommand="adb shell input text \""+text+"\""
+		self.bashCall(bashCommand)
+		#self.device.type(text)
 
 	def traverse(self):
-		self.uninstall_app()
-		self.install_app()
-		self.open_app()
+		#self.test_responsiveness()
+		#self.uninstall_app()
+		#self.test_responsiveness()
+		#self.install_app()
+		self.test_responsiveness()
+		#self.open_app()
+		self.test_responsiveness()
 		print(self.package+" trav: "+self.traversalFile+" apk: "+self.apkPath)
 		
 		traversal_file_data = self.yaml_loader(self.traversalFile)
@@ -87,7 +112,11 @@ class Traversal:
 			if traversal_info_key == "commands":
 				for traversal_step in traversal_info_value:
 					step = traversal_step['type']
-					if step == "screenshot":
+					print "step: "+step
+					if step == "wait":
+						duration = traversal_step['time']
+						self.wait(duration) 
+					elif step == "screenshot":
 						self.screenshot()
 					elif step == "click":
 						coords = traversal_step['coords']
@@ -95,11 +124,12 @@ class Traversal:
 					elif step == "text_entry":
 						text = traversal_step['text']
 						self.text_entry(text)
+
 		
+
 
 if __name__ == "__main__":
 	usage = "monkeyrunner traverse-app.py -i <package> -t <traversal file path> -a <apk file path>"
-	
 	package = ''
 	traversalFile = ''
 	apkPath = ''
