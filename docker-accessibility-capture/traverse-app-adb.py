@@ -1,9 +1,3 @@
-#from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
-#from java.net import SocketException
-#from java.lang import NullPointerException
-#from com.android.ddmlib import TimeoutException
-
-
 
 #import com.android.provider.Settings
 import time, sys, os.path, os
@@ -11,11 +5,9 @@ import subprocess #for running monkey command to start app with package name alo
 print sys.path
 sys.path.append(os.path.join('/usr/lib/python2.7/dist-packages/'))
 import yaml
-
-
+from PIL import Image, ImageChops
 
 class Traversal:
-	device = None
 	package = ''
 	traversalFile = ''
 	logFile = ''
@@ -24,7 +16,6 @@ class Traversal:
 	failed = False
 
 	def __init__(self,arg_package,arg_traversalFile,arg_apkPath):
-		#self.device = MonkeyRunner.waitForConnection()
 		#self.test_responsiveness()
 		self.package = arg_package
 		self.traversalFile = arg_traversalFile
@@ -42,8 +33,19 @@ class Traversal:
 		data = yaml.load(file_descriptor)
 		return data
 
+
+
 	def test_responsiveness(self):
 		print "testing responsiveness"
+		crashBox = (30,250,290,330)
+		crashImage = Image.open("/data/crashScreen.png").crop(crashBox)
+		screenFile = self.screenshot()
+		screenImage = Image.open(screenFile).crop(crashBox)
+		diff = ImageChops.difference(crashImage,screenImage)
+		if  not diff.getbbox():
+			print "crashed"
+			self.click([60,300])
+		self.screenshot()
 		'''
 		self.screenshot();
 		crashBox = (23,227,200,100)
@@ -59,21 +61,30 @@ class Traversal:
 
 	def screenshot(self):
 		filename = "screen"+str(self.screenCount)+".png"
+		phoneDir = "/sdcard/"
+		localDir ="./"
 		self.screenCount += 1
 		#self.device.wake()
 		#screenShot = self.device.takeSnapshot()
 		#screenShot.writeToFile(filename,'png')
-		bashCommand = "adb shell screencap -p /sdcard/"+filename
+		#get screenshot
+		bashCommand = "adb shell screencap -p "+ phoneDir+filename
 		self.bashCall(bashCommand)
-		print "writing to : /sdcard/" + filename
+		#pull off phone to computer
+		bashCommand = "adb pull "+phoneDir+filename +" "+localDir+filename
+		self.bashCall(bashCommand)
+		print "writing to : "+localDir + filename
 		print "retrieve with:"
-		print "docker cp <id>: /sdcard/" + filename + " <path to copy to>"
+		print "docker cp <id>: "+localDir + filename + " <path to copy to>"
+		return localDir+filename
 
 	def install_app(self):
+		print "installing"
 		bashCommand = "adb install "+self.apkPath
 		self.bashCall(bashCommand)
 
 	def uninstall_app(self):
+		print "uninstalling"
 		bashCommand = "adb uninstall "+self.package
 		self.bashCall(bashCommand)
 
@@ -96,12 +107,13 @@ class Traversal:
 		#self.device.type(text)
 
 	def traverse(self):
-		#self.test_responsiveness()
-		#self.uninstall_app()
-		#self.test_responsiveness()
-		#self.install_app()
 		self.test_responsiveness()
-		#self.open_app()
+		
+		self.uninstall_app()
+		#self.test_responsiveness()
+		self.install_app()
+		self.test_responsiveness()
+		self.open_app()
 		self.test_responsiveness()
 		print(self.package+" trav: "+self.traversalFile+" apk: "+self.apkPath)
 		
@@ -124,12 +136,12 @@ class Traversal:
 					elif step == "text_entry":
 						text = traversal_step['text']
 						self.text_entry(text)
-
+		
 		
 
 
 if __name__ == "__main__":
-	usage = "monkeyrunner traverse-app.py -i <package> -t <traversal file path> -a <apk file path>"
+	usage = "python traverse-app.py -i <package> -t <traversal file path> -a <apk file path>"
 	package = ''
 	traversalFile = ''
 	apkPath = ''
@@ -153,32 +165,5 @@ if __name__ == "__main__":
 	else:
 		traversal = Traversal(package,traversalFile,apkPath)
 		traversal.traverse()
-	'''
-	command = sys.argv[1]
-	if command == "-l":
-		print "possible commands: "
-		print "monkeyrunner command.py -l"
-		print "monkeyrunner command.py click <x coord> <y coord>"
-		print "monkeyrunner command.py install <path to APK>"
-	elif command == "click":
-		x = int(sys.argv[2])
-		y = int(sys.argv[3])
-		traversal.click(x,y)
-	elif command=="install":
-		path = sys.argv[2]
-		traversal.install_app()
-	elif command=="open":
-		package = sys.argv[2]
-		traversal.open_app(device, package)
-	elif command == "screenshot":
-		traversal.screenshot(device)
-	elif command == "traverse":
-		traversal_file = sys.argv[2]
-		traverse(device, traversal_file)
-	else :
-		print "no such command"
-	
-	#device.wake()
-	#device.touch(100,300,'DOWN_AND_UP')
-	'''
+
 

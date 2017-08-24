@@ -148,3 +148,8 @@ RUN dos2unix /docker-accessibility-capture-entrypoint.sh && \
 # Run the wrapper script
 CMD ["/docker-accessibility-capture-entrypoint.sh"]
 {# This comment gives us a newline at the end of the generated file #}
+
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python get-pip.py
+RUN rm get-pip.py
+RUN pip install Pillow
