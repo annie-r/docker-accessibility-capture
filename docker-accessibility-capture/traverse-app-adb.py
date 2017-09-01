@@ -110,7 +110,7 @@ class Traversal:
 		self.test_responsiveness()
 		
 		self.uninstall_app()
-		#self.test_responsiveness()
+		self.test_responsiveness()
 		self.install_app()
 		self.test_responsiveness()
 		self.open_app()
