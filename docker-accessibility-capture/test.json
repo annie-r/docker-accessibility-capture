@@ -1,0 +1,34 @@
+{
+  "screenshots": [
+    {
+      "_id": "f809450a75056e5db04ac17018006e9c",
+      "clickCoord": {
+        "x": "23px",
+        "y": "101px"
+      },
+      "inputType": "text",
+      "inputData": "hello world",
+      "stepNum": 1,
+      "needsInput": false,
+      "screenshot": "app_images/Home1.png"
+    },
+    {
+      "_id": "f809450a75056e5db04ac17018007e16",
+      "stepNum": 2,
+      "needsInput": true,
+      "screenshot": "app_images/Home2.png"
+    }
+  ], 
+  "apps": [
+    {
+      "_id": "f809450a75056e5db04ac17018000fef",
+      "app": "Instagram",
+      "version": "1.0",
+      "trace": "home",
+      "screenshots": [
+        "f809450a75056e5db04ac17018006e9c",
+        "f809450a75056e5db04ac17018007e16"
+      ]
+    }
+  ]
+}
