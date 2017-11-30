@@ -1,0 +1,24 @@
+version: "2"
+services:
+  serv:
+    build: C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture
+    ports:
+      - "8888"
+    container_name: serv
+    #networks: 
+    #  - app_network
+    volumes:
+      - /c/Users/ansross/Documents/Research/Android_Accessability_Capture/docker-accessibility-capture/data/db:/data
+
+  emu1:
+    build: C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture
+    #networks:
+    #  - app_network
+    volumes:
+      - /c/Users/ansross/Documents/Research/Android_Accessability_Capture/docker-accessibility-capture/data/emu1:/data
+  #emu2:
+   # build: C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture
+    #networks:
+    #  - app_network
+    #volumes:
+     # - C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture\data\emu2

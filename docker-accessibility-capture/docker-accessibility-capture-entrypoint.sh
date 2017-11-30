@@ -1,5 +1,11 @@
 #!/bin/bash
-echo $PATH
+#echo $PATH
+
+while true
+do 
+  #ping cont1
+  sleep 30
+done
 
 ip=$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')
 socat tcp-listen:$ANDROID_EMULATOR_PORT,bind=$ip,fork tcp:127.0.0.1:$ANDROID_EMULATOR_PORT &
