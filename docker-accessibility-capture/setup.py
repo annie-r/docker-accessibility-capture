@@ -39,3 +39,11 @@ with open('test.json') as json_data:
 	for app in apps: 
 		db.save(app)
 
+
+# Load views
+with open('views.json') as json_data: 
+	views_data = json.load(json_data)
+	views = views_data['views']
+	for view in views: 
+		db.save(view)
+

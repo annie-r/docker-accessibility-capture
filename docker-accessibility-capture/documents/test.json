@@ -2,32 +2,51 @@
   "screenshots": [
     {
       "_id": "f809450a75056e5db04ac17018006e9c",
+      "type": "screenshot",
       "clickCoord": {
         "x": "23px",
         "y": "101px"
       },
-      "inputType": "text",
-      "inputData": "hello world",
+      "inputType": "click",
       "stepNum": 1,
       "needsInput": false,
       "screenshot": "app_images/Home1.png"
     },
     {
       "_id": "f809450a75056e5db04ac17018007e16",
+      "type": "screenshot",
       "stepNum": 2,
       "needsInput": true,
       "screenshot": "app_images/Home2.png"
+    }, 
+    {
+      "_id": "eea7f4e7d5bed65942b54c285f004371",
+      "type": "screenshot",
+      "stepNum": 1,
+      "needsInput": true,
+      "screenshot": "app_images/Home3.png"
     }
   ], 
   "apps": [
     {
       "_id": "f809450a75056e5db04ac17018000fef",
+      "type": "app",
       "app": "Instagram",
       "version": "1.0",
       "trace": "home",
       "screenshots": [
         "f809450a75056e5db04ac17018006e9c",
         "f809450a75056e5db04ac17018007e16"
+      ]
+    }, 
+    {
+      "_id": "eea7f4e7d5bed65942b54c285f0029dc",
+      "type": "app",
+      "app": "Lyft",
+      "version": "1.0",
+      "trace": "login",
+      "screenshots": [
+        "eea7f4e7d5bed65942b54c285f004371"
       ]
     }
   ]
