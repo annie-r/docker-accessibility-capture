@@ -3,14 +3,14 @@
     {
       "_id": "_design/screenshots",
       "views": {
-        "all": {
-          "map": "function(doc) { if(doc.type == 'screenshot') { emit(doc._id, doc); }}"
-        },
         "screenshots_by_app": {
           "map": "function (doc) {\n  if(doc.app && doc.type == \"app\") {\n    for(var i=0; i<doc.screenshots.length; i++) {\n      var screenshot = doc.screenshots[i]; \n      emit(doc.app, {_id: screenshot }); \n    }\n  }\n}"
         }, 
         "all_apps": {
-          "map": "function (doc) {\n  if(doc.type == \"app\") {\n    emit(doc._id, doc.app); \n  }\n}"
+          "map": "function (doc) {\n  if(doc.type == \"app\") {\n    emit(doc.app, doc._id); \n  }\n}"
+        },
+        "app_for_screenshot": {
+          "map": "function (doc) {\n  if(doc.type == \"app\")  {\n    for(var i=0; i<doc.screenshots.length; i++) {\n      screenshot = doc.screenshots[i]; \n      emit(screenshot, doc); \n    }\n  }\n}"
         }
       }
     }

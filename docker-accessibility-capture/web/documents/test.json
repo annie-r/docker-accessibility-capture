@@ -34,6 +34,7 @@
       "app": "Instagram",
       "version": "1.0",
       "trace": "home",
+      "currentStep": 2,
       "screenshots": [
         "f809450a75056e5db04ac17018006e9c",
         "f809450a75056e5db04ac17018007e16"
@@ -45,6 +46,7 @@
       "app": "Lyft",
       "version": "1.0",
       "trace": "login",
+      "currentStep": 1, 
       "screenshots": [
         "eea7f4e7d5bed65942b54c285f004371"
       ]
