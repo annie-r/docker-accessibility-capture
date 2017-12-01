@@ -1,11 +1,18 @@
 $(document).ready(function() {
-	$('#screenshot').click(function(e){
+	$('.screenshot').click(function(e){
 		target = e.target;
-		click_coords = { x: e.clientX, y: e.clientY };
+		screenshot_id = target.getAttribute("id")
+		click_coords = JSON.stringify({ x: e.clientX, y: e.clientY, id: screenshot_id });
 
-		$.post("click", click_coords, function(data) {
-			// Success
-			window.location = data; 
+		$.ajax({
+			url: '/click', 
+			data: click_coords, 
+			type: 'POST', 
+			contentType: 'application/json;charset=UTF-8',
+			success: function(data) {
+				// Success
+				window.location = data; 
+			}
 		});
 	});
 });

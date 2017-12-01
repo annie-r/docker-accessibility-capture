@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
 
-{% for screenshot in screenshots %}
-  <img id="screenshot" src="{{screenshot}}" class="screenshot" />
-{% endfor %}
+{% if no_screenshots %}
+   <h2>No more screenshots to process.</h2>
+{% else %}
+  {% for screenshot in screenshots %}
+    <img id="{{screenshot_id}}" src="{{screenshot}}" class="screenshot" />
+  {% endfor %}
+{% endif %}
 
 {% endblock %}

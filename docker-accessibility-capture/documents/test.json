@@ -4,8 +4,8 @@
       "_id": "f809450a75056e5db04ac17018006e9c",
       "type": "screenshot",
       "clickCoord": {
-        "x": "23px",
-        "y": "101px"
+        "x": 23,
+        "y": 101
       },
       "inputType": "click",
       "stepNum": 1,
