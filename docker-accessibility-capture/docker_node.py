@@ -2,14 +2,13 @@
 #
 import socket, select
 from message import *
-from node import Node
-from docker_network import NetworkNode 
+from networking import Network
 import sys
 
 if __name__ == '__main__':
-    nn = Node(8888)
+    n = Network(8888)
     sys.stdout.flush()
-    nn.start()
+    n.start()
 
 
     # node = Node(8888)

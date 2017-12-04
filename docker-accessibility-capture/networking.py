@@ -2,13 +2,14 @@ import socket
 import sys
 from message import *
 
-class Node:
+class Network:
 	def __init__(self, port):
 		self.RECV_BUFFER = 4096
-		self.PORT = 8875
+		self.PORT = 8874
 		print ("created")
 
-
+	# message is of type Message
+	# node is name of node within docker network
 	def send_message_to_node(self, node, message):
 		print ("in send")
 		sys.stdout.flush()
@@ -45,6 +46,9 @@ class Node:
 		self.socket.bind((socket.gethostname(),self.PORT))
 		self.socket.listen(10)
 		self.socket.setblocking(True)
+
+		#listen for incoming connection from other docker nodes
+		# TODO: figure out how to connect from outside docker network
 		while True:
 			print ("waiting")
 			sys.stdout.flush()
@@ -52,17 +56,5 @@ class Node:
 			data = conn.recv(self.RECV_BUFFER)
 			print ("data: " + data)
 			self.parse_message(data)
-			'''
-			self.send_message_to_node("cont1",msg.type)
-			sys.stdout.flush()
-			if (socket.gethostname() == "serv"):
-				self.send_message_to_node("cont1","from serv")
-				'''
 			conn.close()
 
-	def listen(self):
-		None
-
-if __name__ == '__main__':
-	node = Node(8888)
-	node.run()
