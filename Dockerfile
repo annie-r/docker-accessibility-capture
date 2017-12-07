@@ -187,14 +187,5 @@ COPY docker-accessibility-capture/docker-accessibility-capture-entrypoint.sh /do
 RUN dos2unix /docker-accessibility-capture-entrypoint.sh && \
     chmod +x /docker-accessibility-capture-entrypoint.sh
 
-COPY docker-accessibility-capture/node.sh /node.sh
-RUN dos2unix /node.sh && \
-    chmod +x /node.sh
-
-COPY docker-accessibility-capture/server.sh /server.sh
-RUN dos2unix /server.sh && \
-    chmod +x /server.sh	
-
-
 # Run the wrapper script
 CMD ["/docker-accessibility-capture-entrypoint.sh"]

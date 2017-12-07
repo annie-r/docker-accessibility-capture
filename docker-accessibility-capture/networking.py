@@ -3,49 +3,40 @@ import sys
 from message import *
 
 class Network:
-	def __init__(self, port):
+	def __init__(self, port, cont_name):
 		self.RECV_BUFFER = 4096
-		self.PORT = 8874
+		self.PORT = 8888
+		self.name = cont_name
 		print ("created")
 
-	# message is of type Message
+
+
+	# message is of type string
 	# node is name of node within docker network
-	def send_message_to_node(self, node, message):
-		print ("in send")
+	def send_message_to_node(self, cont_name, port, message):
+		print ("sending "+str(message)+" to "+str(cont_name))
 		sys.stdout.flush()
+		ip = socket.gethostbyname(cont_name)
+		self.send_message((cont_name,port),message)
+
+		
+
+	def send_message(self, full_addr, message):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		ip = socket.gethostbyname(node)
-
-		s.connect((ip,self.PORT))
-		s.send(message)
-
+		s.connect(full_addr)
+		s.send(message.encode())
 		s.close()
-
-	def parse_message(self, data):
-		msg = Message()
-		msg.deserializeMessage(data)
-		# traversal data from web server -> main docker
-		# must forward to correct emu container
-		# traversal data from main docker -> emu container
-		# must read, execute, and take screenshot
-		if msg.type == TRAVERSAL_DATA:
-			if msg.sender == "serv":
-				resp_msg = Message("emu1",SCREENSHOT_READY,"Skype","test")
-				self.send_message_to_node("serv",resp_msg.serializeMessage())
-			else:
-				# forward message to right emu
-				msg.sender = "serv"
-				self.send_message_to_node("emu1",msg.serializeMessage()) 
-
 
 	def start(self):
 
-		# Run the TCP server
+		# Run the TCP serverdoc
 
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.socket.bind((socket.gethostname(),self.PORT))
 		self.socket.listen(10)
 		self.socket.setblocking(True)
+		print ("host:" + socket.getfqdn())
+
 
 		#listen for incoming connection from other docker nodes
 		# TODO: figure out how to connect from outside docker network
@@ -53,8 +44,13 @@ class Network:
 			print ("waiting")
 			sys.stdout.flush()
 			conn, addr = self.socket.accept()
+			print ("addr: "+str(addr))
 			data = conn.recv(self.RECV_BUFFER)
-			print ("data: " + data)
-			self.parse_message(data)
+			print ("receiving: " + data)
+			#messages = data.split("!")
+			#print("messages: "+str(messages))
+			#for msg in messages:
+			#	if msg:
+			self.parse_message(data, addr)
 			conn.close()
 

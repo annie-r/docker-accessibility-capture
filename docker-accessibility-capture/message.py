@@ -7,6 +7,7 @@ SCREENSHOT_TO_DB = 2
 SCREENSHOT_READY = 3
 WEB_DATA_TO_DB = 4
 TRAVERSAL_DATA = 5
+WEB_SERVER_INTRO = 6
 
 ## TODO CLEAR INPUT FILE
 
@@ -34,4 +35,4 @@ class Message:
 			elif comp[0] == "FILE":
 				self.fileName = comp[1]
 		if (self.type == None or self.sender == None or self.appName == None or self.fileName == None):
-			print "ERROR, incomplete message!"+stringMsg
+			print ("ERROR, incomplete message!"+stringMsg)

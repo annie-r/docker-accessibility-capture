@@ -3,7 +3,7 @@ services:
   serv:
     build: ../
     ports:
-      - "8888"
+      - "8888:8888"
     container_name: serv
     #networks: 
     #  - app_network
@@ -13,7 +13,7 @@ services:
 
   emu1:
     build: ../
-    container_name: cont1
+    container_name: emu1
     ports:
       - "8888"
     #networks:
