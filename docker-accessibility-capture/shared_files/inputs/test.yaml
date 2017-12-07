@@ -1,5 +1,5 @@
 traversal:
   commands:
-    coords: !!python/tuple [208, 324]
-    type: click
+    coords: !!python/tuple [671, 634]
+    type: !!python/unicode 'click'
   id: !!python/unicode 'Instagram'

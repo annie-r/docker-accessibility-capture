@@ -36,7 +36,7 @@ def home():
 	random_screenshot = get_unprocessed_screenshot(screenshots_by_app)
 	if random_screenshot is not None: 
 		file_name = random_screenshot['screenshot']
-		image_data = random_screenshot['image_data']
+		image_data = random_screenshot['imageData']
 		screenshot_id = random_screenshot['_id']
 		return render_template('screenshots.html', screenshots=[image_data], screenshot_id=screenshot_id)
 	else:
@@ -49,17 +49,21 @@ def handle_screenshot_click():
 	clientX = data["x"]
 	clientY = data["y"]
 	screenshot_id = data["id"]
-
-	# Update the document JSON
-	screenshot_doc = db[screenshot_id]
-	screenshot_doc["clickCoord"] = {
+	input_type = data["type"]
+	click_coords = {
 		"x": clientX, 
 		"y": clientY
 	}
- 
-	input_type = "click" # Assume click for now
+
+	# Update the document JSON
+	screenshot_doc = db[screenshot_id]
+	screenshot_doc["clickCoord"] = click_coords
 	screenshot_doc["needsInput"] = False
 	screenshot_doc["inputType"] = input_type
+
+	if input_type == "text": 
+		textValue = data["text"]
+		screenshot_doc["textValue"] = textValue
 
 	# Save to clouddb
 	db.save(screenshot_doc)
@@ -89,7 +93,6 @@ def send_docker_app_message(screenshot_id, app_name, input_type, user_coordinate
 	write_message_file(message_path, app_name, input_type, user_coordinates, text)
 
 	# Send message 
-
 
 def receive_docker_app_message(app_name, screenshot_path): 
 	# Get ID for the app & update 
@@ -137,13 +140,15 @@ def create_new_screenshot_record(app_id, screenshot_path):
 	# Create and save screenshot document
 	app_doc = db[app_id]
 	step_num = app_doc["currentStep"]
+	step_num += 1
+
 	screenshot_id = uuid.uuid4().hex
 	screenshot_doc = {
 		"_id": screenshot_id, 
 		"type": "screenshot",
 		"needsInput": True, 
 		"screenshot": screenshot_path, 
-		"image_data": screenshot_data, 
+		"imageData": screenshot_data, 
 		"stepNum": step_num
 	}
 	db.save(screenshot_doc)
@@ -171,4 +176,11 @@ def get_unprocessed_screenshot(screenshots):
 		return needsProcessed[rand_index]
 
 if __name__ == '__main__':
+	# Make new instance of network class 
+
+	# Set up thread to receive commnications & send/receive messages from Docker
+	# t = Thread(target=self.)
+	# t.start()
+
 	app.run()
+

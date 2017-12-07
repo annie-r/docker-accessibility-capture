@@ -36,7 +36,7 @@ with open('documents/test.json') as json_data:
 		img_b64 = base64.b64encode(img_data)
 		img_b64_string = img_b64.decode("utf-8")
 
-		screenshot["image_data"] = "data:image/png;base64, " + img_b64_string
+		screenshot["imageData"] = "data:image/png;base64, " + img_b64_string
 
 		doc_id = db.save(screenshot)
 

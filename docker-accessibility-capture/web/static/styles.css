@@ -1,3 +1,19 @@
 .screenshot {
 	width: 50%;
+	cursor: pointer;
+	margin-left: 20px;
 }
+
+.layout-container {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-input {
+	margin-left: 10px;
+}
+
+
+
+

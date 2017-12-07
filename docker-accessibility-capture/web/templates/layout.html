@@ -1,9 +1,38 @@
 <!doctype html>
 <title>App Access</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript src="{{ url_for('static', filename='main.js') }}"></script>
 <div class="page">
-  <h1>Screenshots</h1>
-  {% block body %}{% endblock %}
+   <!-- Page Content -->
+    <div class="container">
+
+      <!-- Portfolio Item Heading -->
+      <h1 class="my-4">Big MAC
+        <small>Mobile Accessibility Capture</small>
+      </h1>
+ 		<div class="well">
+			<h4>What is the type of input?
+		        <small></small>
+			</h4>
+			<div class="radio-button-group">
+				<div class="radio">
+				  <label><input id="click" type="radio" name="optradio" checked>Click</label>
+				</div>
+				<div class="radio">
+				  <label><input id="text" type="radio" name="optradio">Text</label>
+				  <input id="text-value" class="text-input" type="text" />
+				</div>
+			</div>
+		</div>
+      	<div class="well layout-container">
+	  		{% block body %}{% endblock %}
+		</div>
+	</div>
 </div>
