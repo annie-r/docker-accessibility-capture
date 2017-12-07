@@ -113,7 +113,7 @@ RUN cd /opt \
     && unzip -q android-sdk-tools.zip -d ${ANDROID_HOME} \
     && rm -f android-sdk-tools.zip
 
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+ENV PATH ${PATH}:${ANDROID_HOME}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 
 
@@ -137,24 +137,22 @@ RUN mkdir -p ${ANDROID_HOME}/licenses
 RUN echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > ${ANDROID_HOME}/licenses/android-sdk-license
 
 # Platform tools
-RUN sdkmanager "platform-tools"
+RUN echo y | sdkmanager "platform-tools"
 
 # SDKs
-RUN sdkmanager "platforms;android-24"
+RUN echo y | sdkmanager "platforms;android-24"
 
 # build tools
 # Please keep these in descending order!
-RUN sdkmanager "build-tools;24.0.3"
+RUN echo y | sdkmanager "build-tools;24.0.3"
+
+# Need the canary build for the swiftshader support
+RUN (echo y & echo y) | sdkmanager --channel=3 "emulator"
 
 # Android System Image for emulator
 RUN sdkmanager "system-images;android-24;default;armeabi-v7a"
 
-# Need the canary build for the swiftshader support
-RUN echo yes | sdkmanager --channel=3 "emulator"
-
 RUN sdkmanager --list --verbose
-
-
 
 
 RUN echo no | avdmanager create avd -f -n "docker-accessibility-capture" -k "system-images;android-24;default;armeabi-v7a" -c 128M
