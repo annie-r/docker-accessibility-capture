@@ -31,7 +31,7 @@ class ClientNode(Network):
 
 		#to get things rolling
 		# TODO: will end up being triggered by website
-		msg = Message("client",TRAVERSAL_DATA,"Skype","test.txt")
+		msg = Message("client",TRAVERSAL_DATA,"Gmail","test2.yaml")
 		self.send_message((self.dock_master_ip,self.dock_master_port),msg.serializeMessage())
 
 		#listen for incoming connection from other docker nodes
