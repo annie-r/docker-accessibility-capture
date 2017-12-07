@@ -1,7 +1,7 @@
 version: "2"
 services:
   serv:
-    build: ../
+    build: ../../
     ports:
       - "8888:8888"
     container_name: serv
@@ -12,7 +12,7 @@ services:
       - .:/code
 
   emu1:
-    build: ../
+    build: ../../
     container_name: emu1
     ports:
       - "8888"
@@ -22,14 +22,14 @@ services:
       - ./data/emu1:/data
       - .:/code
 
-  test1:
-    build: ../
-    container_name: test
-    #networks:
-    #  - app_network
-    volumes:
-      - .:/code
-  #emu2:
+  # test1:
+  #   build: ../
+  #   container_name: test
+  #   #networks:
+  #   #  - app_network
+  #   volumes:
+  #     - .:/code
+  # #emu2:
    # build: C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture
     #networks:
     #  - app_network
