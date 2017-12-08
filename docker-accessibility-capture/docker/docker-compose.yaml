@@ -8,19 +8,26 @@ services:
     #networks: 
     #  - app_network
     volumes:
-      - ./data/db:/data
+      - ../shared_files:/shared
       - .:/code
+    #entrypoint:
+    #  - python
+    #  - /code/master_node.py
 
   emu1:
     build: ../../
     container_name: emu1
-    ports:
-      - "8888"
+    #ports:
+    #  - "8888"
     #networks:
     #  - app_network
     volumes:
-      - ./data/emu1:/data
+      - ./data/emu1:/screenshots
+      - ../shared_files:/shared
       - .:/code
+    #entrypoint:
+    #  - python
+    #  - /code/docker_emu_node.py
 
   # test1:
   #   build: ../
@@ -29,7 +36,9 @@ services:
   #   #  - app_network
   #   volumes:
   #     - .:/code
-  # #emu2:
+
+  #emu2:
+
    # build: C:\Users\ansross\Documents\Research\Android_Accessability_Capture\docker-accessibility-capture
     #networks:
     #  - app_network

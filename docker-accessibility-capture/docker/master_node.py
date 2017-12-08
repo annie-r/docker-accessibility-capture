@@ -4,8 +4,8 @@ from message import *
 class Master(Network):
 	def __init__(self, port, name):
 		Network.__init__(self,port,name)
-		self.apps = ["Skype","Facebook"]
-		self.app_to_cont = {"Skype":"emu1", "Facebook":"emu1"}
+		self.apps = ["Skype","Gmail"]
+		self.app_to_cont = {"Skype":"emu1", "Gmail":"emu1"}
 		self.web_server_address = None
 
 	def parse_message(self, data, addr=None):
@@ -16,11 +16,13 @@ class Master(Network):
 		if msg.type == WEB_SERVER_INTRO:
 			self.web_server_address = (msg.appName, int(msg.fileName))
 		if msg.type == TRAVERSAL_DATA:
+			#TODO: check that the file is valid and in shared directory
 			# find right emu container for the app
 			emu_cont = self.app_to_cont[msg.appName]
 			msg.sender = self.name
-			self.send_message_to_node(emu_cont, self.PORT, msg.serializeMessage())
 			# forward the message
+			self.send_message_to_node(emu_cont, self.PORT, msg.serializeMessage())
+			
 		elif msg.type == SCREENSHOT_READY:
 			#send msg to web server
 			print ("web serv addr: "+str(self.web_server_address))
