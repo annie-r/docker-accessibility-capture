@@ -8,8 +8,11 @@ services:
     #networks: 
     #  - app_network
     volumes:
-      - ../shared_file:/shared
+      - ../shared_files:/shared
       - .:/code
+    #entrypoint:
+    #  - python
+    #  - /code/master_node.py
 
   emu1:
     build: ../../
@@ -22,6 +25,9 @@ services:
       - ./data/emu1:/screenshots
       - ../shared_files:/shared
       - .:/code
+    #entrypoint:
+    #  - python
+    #  - /code/docker_emu_node.py
 
   # test1:
   #   build: ../
