@@ -26,7 +26,7 @@ all_screenshots = db.view('screenshots/all')
 for screenshot in all_screenshots:
   document = screenshot['value']
   file_name = document['screenshot']
-  image_data = document['image_data']
+  image_data = document['imageData']
 
   image_decoded = base64.b64decode(image_data)
   image_bytes = BytesIO(image_decoded)

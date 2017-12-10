@@ -1,0 +1,5 @@
+traversal:
+  commands:
+    coords: !!python/tuple [516, 344]
+    type: !!python/unicode 'click'
+  id: !!python/unicode 'Skype'

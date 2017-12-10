@@ -31,7 +31,7 @@
     {
       "_id": "f809450a75056e5db04ac17018000fef",
       "type": "app",
-      "app": "Instagram",
+      "app": "Gmail",
       "version": "1.0",
       "trace": "home",
       "currentStep": 2,
@@ -43,7 +43,7 @@
     {
       "_id": "eea7f4e7d5bed65942b54c285f0029dc",
       "type": "app",
-      "app": "Lyft",
+      "app": "Skype",
       "version": "1.0",
       "trace": "login",
       "currentStep": 1, 

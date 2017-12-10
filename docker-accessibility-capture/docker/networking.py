@@ -9,8 +9,6 @@ class Network:
 		self.name = cont_name
 		print ("created")
 
-
-
 	# message is of type string
 	# node is name of node within docker network
 	def send_message_to_node(self, cont_name, port, message):
@@ -19,8 +17,6 @@ class Network:
 		ip = socket.gethostbyname(cont_name)
 		self.send_message((cont_name,port),message)
 
-		
-
 	def send_message(self, full_addr, message):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.connect(full_addr)
@@ -28,15 +24,12 @@ class Network:
 		s.close()
 
 	def start(self):
-
 		# Run the TCP serverdoc
-
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.socket.bind((socket.gethostname(),self.PORT))
 		self.socket.listen(10)
 		self.socket.setblocking(True)
 		print ("host:" + socket.getfqdn())
-
 
 		#listen for incoming connection from other docker nodes
 		# TODO: figure out how to connect from outside docker network
@@ -46,7 +39,10 @@ class Network:
 			conn, addr = self.socket.accept()
 			print ("addr: "+str(addr))
 			data = conn.recv(self.RECV_BUFFER)
-			print ("receiving: " + data)
+			print ("receiving1: " + data)
+			sys.stdout.flush()
+			print("parsing the message")
+			sys.stdout.flush()
 			#messages = data.split("!")
 			#print("messages: "+str(messages))
 			#for msg in messages:

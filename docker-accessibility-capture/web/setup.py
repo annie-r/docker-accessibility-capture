@@ -21,12 +21,15 @@ db = None
 try: 
 	db = couch[couchdbname] 
 	print("Database already initialized..")
-	sys.exit(0)
-except Exception: 
-	db = couch.create("accessibility")
+	print("Removing and re-initializing the database..") # IN the future, we should probably confirm this :)
+	couch.delete(couchdbname)
+except Exception as e: 
+	print("Creating database for the first time.")
+
+db = couch.create(couchdbname)
 
 # Load dataset from file and insert documents into db
-with open('documents/test.json') as json_data: 
+with open('documents/test.json') as json_data:
 	test_data = json.load(json_data)
 	screenshots = test_data['screenshots']
 	for screenshot in screenshots: 
