@@ -2,8 +2,6 @@ from networking import Network
 from message import *
 import socket
 import os
-import signal
-import threading
 
 class ClientNode(Network):
 	def __init__(self, port,name):
@@ -19,9 +17,6 @@ class ClientNode(Network):
 		return msg
 
 	def start(self, callback):
-		main_thread = threading.current_thread()
-
-		print("Calling the start method NOW")
 		# Run the TCP serverdoc
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		print ("ip: "+socket.gethostname())
