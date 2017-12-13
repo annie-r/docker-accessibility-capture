@@ -101,7 +101,6 @@ class CouchDatabase:
 			if screenshot_doc['needsInput']: 
 				needsProcessed.append(screenshot_doc)
 
-
 		# Select a random index 
 		total = len(needsProcessed)
 		if total > 0: 
